@@ -10,7 +10,7 @@ public class Purchase
     public DateTime Date { get; private set; }
     
     public Person Person { get; set; }
-    public Product Prodcut { get; set; }
+    public Product Product { get; set; }
 
     public Purchase(int productId, int personId, DateTime? date)
     {

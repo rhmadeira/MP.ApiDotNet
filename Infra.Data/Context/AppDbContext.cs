@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Context;
 
-internal class DbApiDotNet : DbContext
+internal class AppDbContext : DbContext
 {
 
-    public DbApiDotNet(DbContextOptions<DbApiDotNet> options) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
@@ -17,6 +17,6 @@ internal class DbApiDotNet : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DbApiDotNet).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 }

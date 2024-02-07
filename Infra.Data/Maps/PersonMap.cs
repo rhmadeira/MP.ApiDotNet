@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Infra.Data.Maps;
 
 //Aqui você está declarando uma classe chamada PersonMap que implementa a interface IEntityTypeConfiguration<T> onde T é substituído pela sua entidade Person.
-internal class PersonMap : IEntityTypeConfiguration<Person>
+public class PersonMap : IEntityTypeConfiguration<Person>
 {
 
     //Este método é da interface IEntityTypeConfiguration<T> e você está implementando-o. Ele é chamado pelo EF Core para configurar as propriedades e relacionamentos da entidade Person.
