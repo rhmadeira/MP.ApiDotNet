@@ -1,4 +1,5 @@
 using Infra.IoC;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
+
+//Remove nulos!
+//builder.Services.AddMvc().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+//});
 
 var app = builder.Build();
 

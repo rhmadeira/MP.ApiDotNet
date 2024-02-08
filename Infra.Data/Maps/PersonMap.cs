@@ -11,19 +11,19 @@ public class PersonMap : IEntityTypeConfiguration<Person>
     public void Configure(EntityTypeBuilder<Person> builder)
     {
         //Aqui você está dizendo para o EF Core usar a tabela chamada "Pessoa" para mapear a entidade Person.
-        builder.ToTable("Pessoa");
+        builder.ToTable("pessoa");
         //Você está configurando a chave primária da tabela Pessoa para ser a propriedade Id da entidade Person.
         builder.HasKey(c => c.Id);
         //Aqui você está mapeando as propriedades da entidade Person para as colunas da tabela Pessoa, usando o método HasColumnName para especificar os nomes das colunas na tabela do banco de dados.
         builder.Property(c => c.Id)
-               .HasColumnName("Idpessoa")
+               .HasColumnName("idpessoa")
                .UseIdentityColumn();
         builder.Property(c => c.Name)
-               .HasColumnName("Nome");
+               .HasColumnName("nome");
         builder.Property(c => c.Document)
-               .HasColumnName("Documento");
+               .HasColumnName("documento");
         builder.Property(c => c.Phone)
-               .HasColumnName("Celular");
+               .HasColumnName("celular");
 
         builder.HasMany(person => person.Purchases)
                .WithOne(purchase => purchase.Person)

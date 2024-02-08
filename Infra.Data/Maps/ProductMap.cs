@@ -10,19 +10,19 @@ public class ProductMap : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable("Produto");
+        builder.ToTable("produto");
         builder.HasKey(product => product.Id);
 
         builder.Property(product => product.Id)
-               .HasColumnName("Idproduto")
+               .HasColumnName("idproduto")
                .UseIdentityColumn();
 
         builder.Property(product => product.Name)
-               .HasColumnName("Nome");
+               .HasColumnName("nome");
         builder.Property(product => product.Price)
-               .HasColumnName("Preco");
+               .HasColumnName("preco");
         builder.Property(product => product.CodErp)
-               .HasColumnName("Coderp");
+               .HasColumnName("coderp");
 
         builder.HasMany(product => product.Purchases)
                .WithOne(purchase => purchase.Product)
