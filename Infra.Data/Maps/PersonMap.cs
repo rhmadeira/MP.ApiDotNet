@@ -16,7 +16,7 @@ public class PersonMap : IEntityTypeConfiguration<Person>
         builder.HasKey(c => c.Id);
         //Aqui você está mapeando as propriedades da entidade Person para as colunas da tabela Pessoa, usando o método HasColumnName para especificar os nomes das colunas na tabela do banco de dados.
         builder.Property(c => c.Id)
-               .HasColumnName("IdPessoa")
+               .HasColumnName("Idpessoa")
                .UseIdentityColumn();
         builder.Property(c => c.Name)
                .HasColumnName("Nome");

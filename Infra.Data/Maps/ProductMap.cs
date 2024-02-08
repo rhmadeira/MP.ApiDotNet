@@ -14,7 +14,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
         builder.HasKey(product => product.Id);
 
         builder.Property(product => product.Id)
-               .HasColumnName("IdProduto")
+               .HasColumnName("Idproduto")
                .UseIdentityColumn();
 
         builder.Property(product => product.Name)
@@ -22,7 +22,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
         builder.Property(product => product.Price)
                .HasColumnName("Preco");
         builder.Property(product => product.CodErp)
-               .HasColumnName("CodErp");
+               .HasColumnName("Coderp");
 
         builder.HasMany(product => product.Purchases)
                .WithOne(purchase => purchase.Product)

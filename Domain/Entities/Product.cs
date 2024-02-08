@@ -13,6 +13,7 @@ public sealed class Product
     public Product(string name, string codErp, decimal price)
     {
         Validate(name, codErp, price);
+        Purchases = new List<Purchase>();
     }
 
     public Product(int id, string name, string codErp, decimal price)
@@ -20,6 +21,7 @@ public sealed class Product
         DomainValidationException.When(id < 0, "Invalid Id value");
         Id = id;
         Validate(name, codErp, price);
+        Purchases = new List<Purchase>();
     }
 
     private void Validate(string name, string codErp, decimal price)

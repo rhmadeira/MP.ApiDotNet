@@ -12,27 +12,25 @@ public class Purchase
     public Person Person { get; set; }
     public Product Product { get; set; }
 
-    public Purchase(int productId, int personId, DateTime? date)
+    public Purchase(int productId, int personId)
     {
-        Validate(productId, personId, date);
+        Validate(productId, personId);
     }
 
     public Purchase(int id, int productId, int personId, DateTime? date)
     {
         DomainValidationException.When(id < 0, "Invalid Id value");
         Id = id;
-        Validate(productId, personId, date);
+        Validate(productId, personId);
     }
     
-    public void Validate(int productId, int personId, DateTime? date)
+    public void Validate(int productId, int personId)
     {
         DomainValidationException.When(productId < 0, "Id do produto inválido");
         DomainValidationException.When(personId < 0, "Id da pessoa inválido");
-        DomainValidationException.When(date == DateTime.MinValue, "data inválida");
-        DomainValidationException.When(!date.HasValue, "data inválida");
 
         ProductId = productId;
         PersonId = personId;
-        Date = date.Value;
+        Date = DateTime.Now;
     }
 }

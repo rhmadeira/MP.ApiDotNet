@@ -2,6 +2,7 @@
 using App.DTOS;
 using App.Services.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Repositories;
 
 namespace App.Services;
@@ -26,6 +27,12 @@ public class PersonService : IPersonService
 
         if(!result.IsValid)
             return ResultService.RequestError<PersonDTO>("Problemas de validação", result);
+
+        var person = _mapper.Map<Person>(personDTO);
+
+        var data = await _personRepository.CreateAsync(person);
+
+        return ResultService.Ok(_mapper.Map<PersonDTO>(data));
 
     }
     

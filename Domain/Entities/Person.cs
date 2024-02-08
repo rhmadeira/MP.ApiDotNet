@@ -18,6 +18,7 @@ public sealed class Person
     {
         //Validações
         Validate(name, document, phone);
+        Purchases = new List<Purchase>();
     }
 
     //Construtor para quando eu for editar
@@ -26,6 +27,7 @@ public sealed class Person
         DomainValidationException.When(id < 0, "Invalid Id value");
         Id = id;
         Validate(name, document, phone);
+        Purchases = new List<Purchase>();
     }
 
     //Aqui eu faço a validação dos campos

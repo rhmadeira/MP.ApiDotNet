@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories;
 
-internal class ProductRepository : IProductRepository
+public class ProductRepository : IProductRepository
 {
     private readonly AppDbContext _context;
 
