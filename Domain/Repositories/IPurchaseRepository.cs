@@ -1,5 +1,5 @@
 ﻿namespace Domain.Repositories;
 
-internal interface IPurchaseRepository
+public interface IPurchaseRepository
 {
 }
