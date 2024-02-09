@@ -13,7 +13,6 @@ public class PersonRepository : IPersonRepository
     {
         _context = context;
     }
-    
     public async Task<Person> CreateAsync(Person person)
     {
         _context.Add(person);

@@ -35,6 +35,17 @@ public class PersonService : IPersonService
         return ResultService.Ok(person);
     }
 
+    public async Task<ResultService> DeleteAsync(int id)
+    {
+        var person = await _personRepository.GetByIdAsync(id);
+        if (person == null)
+        {
+            return ResultService.Fail<PersonDTO>("Pessoa não encontrada");
+        }
+        await _personRepository.DeleteAsync(person);
+        return ResultService.Ok();
+    }
+
     public async Task<ResultService<ICollection<PersonDTO>>> GetAsync()
     {
 
@@ -50,5 +61,24 @@ public class PersonService : IPersonService
         var person = _mapper.Map<PersonDTO>(dbperson);
 
         return ResultService.Ok(person);
+    }
+
+    public async Task<ResultService<PersonDTO>> UpdetateAsync(PersonDTO personDTO)
+    {
+        if (personDTO == null)
+            return ResultService.Fail<PersonDTO>("Objeto deve ser informado");
+
+        var validate = new PersonDTOValidator().Validate(personDTO);
+        if (!validate.IsValid)
+            return ResultService.RequestError<PersonDTO>("Problemas de validação", validate);
+
+        var person = await _personRepository.GetByIdAsync(personDTO.Id);
+        if (person == null)
+            return ResultService.Fail<PersonDTO>("Pessoa não encontrada");
+
+        person =_mapper.Map(personDTO, person);
+        await _personRepository.UpdateAsync(person);
+
+        return ResultService.Ok(personDTO);
     }
 }
