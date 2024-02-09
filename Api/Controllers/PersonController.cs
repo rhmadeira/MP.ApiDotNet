@@ -55,4 +55,31 @@ public class PersonController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] PersonDTO personDTO)
+    {
+        var result = await _personService.UpdetateAsync(personDTO);
+
+        if (result == null)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
+   
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _personService.DeleteAsync(id);
+
+        if (result == null)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
 }
