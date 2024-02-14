@@ -1,4 +1,5 @@
-﻿using App.DTOS;
+﻿using App.DTOs;
+using App.DTOS;
 using AutoMapper;
 using Domain.Entities;
 
@@ -10,6 +11,7 @@ public class DtoToDomainMapping : Profile
     public DtoToDomainMapping()
     {
         CreateMap<PersonDTO, Person>();
+        CreateMap<ProductDTO, Product>();
     }
     
 }

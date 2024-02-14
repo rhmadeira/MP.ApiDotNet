@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace App.DTOS;
+﻿namespace App.DTOS;
 
 public class PersonDTO
 {

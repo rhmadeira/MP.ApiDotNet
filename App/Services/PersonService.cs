@@ -28,11 +28,11 @@ public class PersonService : IPersonService
         if (!result.IsValid)
             return ResultService.RequestError<PersonDTO>("Problemas de validação", result);
 
-        var dbperson = _mapper.Map<Person>(personDTO);
-        var data = await _personRepository.CreateAsync(dbperson);
-        var person = _mapper.Map<PersonDTO>(data);
-
-        return ResultService.Ok(person);
+        var person = _mapper.Map<Person>(personDTO);
+        var data = await _personRepository.CreateAsync(person);
+        var dto = _mapper.Map<PersonDTO>(data);
+        //O motivo de passar o dto e não o person em si é para que o id seja preenchido no objeto de retorno, poise ele é gerado no banco
+        return ResultService.Ok(dto);
     }
 
     public async Task<ResultService> DeleteAsync(int id)

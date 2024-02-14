@@ -13,7 +13,7 @@ public sealed class Person
     public ICollection<Purchase> Purchases { get; set; }
     
 
-    //Cconstrutor privado para evitar que a classe seja instanciada sem os parâmetros obrigatórios.
+    //Construtor privado para evitar que a classe seja instanciada sem os parâmetros obrigatórios.
     public Person(string name, string document, string phone)
     {
         //Validações
@@ -50,5 +50,4 @@ public sealed class Person
         Document = document;
         Phone = phone;
     }
-
 }
