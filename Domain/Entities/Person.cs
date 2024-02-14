@@ -12,7 +12,6 @@ public sealed class Person
 
     public ICollection<Purchase> Purchases { get; set; }
     
-
     //Construtor privado para evitar que a classe seja instanciada sem os parâmetros obrigatórios.
     public Person(string name, string document, string phone)
     {

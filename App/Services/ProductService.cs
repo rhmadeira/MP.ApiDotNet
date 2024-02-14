@@ -39,19 +39,29 @@ public class ProductService : IProductService
     {
         throw new NotImplementedException();
     }
-
-    public Task<ResultService<ICollection<ProductDTO>>> GetAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ResultService<ProductDTO>> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<ResultService<ProductDTO>> UpdateAsync(ProductDTO productDTO)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<ResultService<ICollection<ProductDTO>>> GetAsync()
+    {
+        var list = await _productRepository.GetProductAsync();
+        var data = _mapper.Map<ICollection<ProductDTO>>(list);
+
+        return ResultService.Ok(data);
+    }
+
+    public async Task<ResultService<ProductDTO>> GetByIdAsync(int id)
+    {
+        if (id <= 0)
+            return ResultService.Fail<ProductDTO>("Id inválido");
+
+        var product = await _productRepository.GetByIdAsync(id);
+        if (product == null)
+            return ResultService.Fail<ProductDTO>("Produto não encontrado");
+
+        var dto = _mapper.Map<ProductDTO>(product);
+        return ResultService.Ok(dto);
     }
 }
