@@ -35,13 +35,40 @@ public class ProductService : IProductService
         return ResultService.Ok(dto);
     }
 
-    public Task<ResultService> DeleteAsync(int id)
+    public async Task<ResultService> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var productDTO = GetByIdAsync(id);
+
+        if (productDTO == null)
+            return ResultService.Fail("Produto não encontrado");
+
+        var product = _mapper.Map<Product>(productDTO);
+
+        await _productRepository.DeleteAsync(product);
+
+        return ResultService.Ok();
     }
-    public Task<ResultService<ProductDTO>> UpdateAsync(ProductDTO productDTO)
+    public async Task<ResultService<ProductDTO>> UpdateAsync(ProductDTO productDTO)
     {
-        throw new NotImplementedException();
+        if(productDTO == null)
+            return ResultService.Fail<ProductDTO>("Você deve enviar um objeto de produto");
+
+        var validate = new ProductDTOValidator().Validate(productDTO);
+
+        if (!validate.IsValid)
+            return ResultService.RequestError<ProductDTO>("Problemas de validação", validate);
+
+        var product = GetByIdAsync(productDTO.Id);
+
+        if (product == null)
+            return ResultService.Fail<ProductDTO>("Produto não encontrado");
+
+        var data = _mapper.Map<Product>(productDTO);
+
+        await _productRepository.UpdateAsync(data);
+
+        return ResultService.Ok(productDTO);
+        
     }
 
     public async Task<ResultService<ICollection<ProductDTO>>> GetAsync()
