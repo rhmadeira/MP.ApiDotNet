@@ -8,7 +8,6 @@ public class Purchase
     public int ProductId { get; private set; }
     public int PersonId { get; private set; }
     public DateTime Date { get; private set; }
-    
     public Person Person { get; set; }
     public Product Product { get; set; }
 
@@ -19,15 +18,23 @@ public class Purchase
 
     public Purchase(int id, int productId, int personId, DateTime? date)
     {
-        DomainValidationException.When(id < 0, "Invalid Id value");
+        DomainValidationException.When(id <= 0, "Invalid Id value");
         Id = id;
+        Date = date ?? DateTime.Now;
         Validate(productId, personId);
     }
-    
+    public void Edit(int id, int productId, int personId)
+    {
+        DomainValidationException.When(id <= 0, "Invalid Id value");
+        Id = id;
+        Date = DateTime.Now;
+        Validate(productId, personId);
+    }
+
     public void Validate(int productId, int personId)
     {
-        DomainValidationException.When(productId < 0, "Id do produto inválido");
-        DomainValidationException.When(personId < 0, "Id da pessoa inválido");
+        DomainValidationException.When(productId <= 0, "Id do produto inválido");
+        DomainValidationException.When(personId <= 0, "Id da pessoa inválido");
 
         ProductId = productId;
         PersonId = personId;

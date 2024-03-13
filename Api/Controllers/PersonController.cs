@@ -1,10 +1,11 @@
 ﻿using App.DTOS;
-using App.Services;
 using App.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 

@@ -19,6 +19,7 @@ public class PurchaseMap : IEntityTypeConfiguration<Purchase>
         builder.Property(purchase => purchase.ProductId)
                .HasColumnName("idproduto");
         builder.Property(purchase => purchase.Date)
+               .HasColumnType("date")
                .HasColumnName("datacompra");
 
         builder.HasOne(purchase => purchase.Person)

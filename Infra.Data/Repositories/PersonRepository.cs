@@ -37,4 +37,20 @@ public class PersonRepository : IPersonRepository
     {
         return await _context.People.ToListAsync();
     }
+
+    public async Task<int> GetIdByDocumentAsync(string document)
+    {
+        var query = _context.People.AsQueryable();
+
+        query = query.Where(x => x.Document == document);
+
+        var sql = query.ToQueryString();
+        var person = query.FirstOrDefault();
+        if (person == null)
+        {
+            return 0;
+        }
+        return person.Id;
+       
+    }
 }

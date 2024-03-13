@@ -11,6 +11,21 @@ public class DomainToDtoMapping : Profile
     {
         CreateMap<Person, PersonDTO>();
         CreateMap<Product, ProductDTO>();
+        CreateMap<Purchase, PurchaseDTO>();
+        CreateMap<Purchase, PurchaseDetailsDTO>()
+            .ForMember(dest => dest.Person, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore())
+            .ConstructUsing((model, context) =>
+            {
+                var dto = new PurchaseDetailsDTO
+                {
+                    Id = model.Id,
+                    Product = model.Product.Name,
+                    Person = model.Person.Name,
+                    Date = model.Date,
+                };
+                return dto;
+            });
     }
     
 }

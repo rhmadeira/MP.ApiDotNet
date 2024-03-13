@@ -32,7 +32,7 @@ public class ProductRepository : IProductRepository
         Product? product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
         return product;
     }
-
+    
     public async Task<IEnumerable<Product>> GetProductAsync()
     {
         var products = await _context.Products.ToListAsync();
@@ -43,5 +43,22 @@ public class ProductRepository : IProductRepository
     {
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<int> GetIdByCodErpAsync(string codErp)
+    {
+        var query = _context.Products.AsQueryable();
+
+        query = query.Where(x => x.CodErp == codErp);
+
+        var sql = query.ToQueryString();
+        var product = query.FirstOrDefault();
+
+        if (product == null)
+        {
+            return 0;
+        }
+        
+        return product.Id;
     }
 }
