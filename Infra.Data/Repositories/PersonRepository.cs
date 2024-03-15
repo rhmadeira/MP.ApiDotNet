@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.FiltersDb;
 using Domain.Repositories;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -19,20 +20,24 @@ public class PersonRepository : IPersonRepository
         await _context.SaveChangesAsync();
         return person;
     }
+    
     public async Task DeleteAsync(Person person)
     {
         _context.Remove(person);
         await _context.SaveChangesAsync();
     }
+    
     public async Task UpdateAsync(Person person)
     {
         _context.Update(person);
         await _context.SaveChangesAsync();
     }
+    
     public async Task<Person> GetByIdAsync(int id)
     {
         return await _context.People.FirstOrDefaultAsync(x => x.Id == id);
     }
+    
     public async Task<IEnumerable<Person>> GetPeopleAsync()
     {
         return await _context.People.ToListAsync();
@@ -52,5 +57,18 @@ public class PersonRepository : IPersonRepository
         }
         return person.Id;
        
+    }
+
+    public async Task<PagedBaseResponse<Person>> GetPagedAsync(PersonFilterDb filter)
+    {
+        var people = await _context.People.ToListAsync();
+
+        if (string.IsNullOrEmpty(filter.Name) == false)
+        {
+            people = people.Where(x => x.Name.Contains(filter.Name)).ToList();
+        }
+
+        return await PagedBaseResponseHelper.GetResponseAsync<PagedBaseResponse<Person>, Person>(people.AsQueryable(), filter);
+
     }
 }
