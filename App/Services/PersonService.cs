@@ -1,8 +1,10 @@
-﻿using App.DTOs.Validations;
+﻿using App.DTOs;
+using App.DTOs.Validations;
 using App.DTOS;
 using App.Services.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Domain.FiltersDb;
 using Domain.Repositories;
 
 namespace App.Services;
@@ -64,6 +66,16 @@ public class PersonService : IPersonService
         return ResultService.Ok(person);
     }
 
+    public async Task<ResultService<PagedBaseResponseDTO<PersonDTO>>> GetPagedAsync(PersonFilterDb personFilter)
+    {
+        var peaplePaged = await _personRepository.GetPagedAsync(personFilter);
+
+        var result = new PagedBaseResponseDTO<PersonDTO>(peaplePaged.TotalPageRegisters, _mapper.Map<List<PersonDTO>>(peaplePaged.Data));
+
+        return ResultService.Ok(result);
+    }
+    
+    
     public async Task<ResultService<PersonDTO>> UpdetateAsync(PersonDTO personDTO)
     {
         if (personDTO == null)

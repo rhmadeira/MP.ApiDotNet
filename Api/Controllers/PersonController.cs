@@ -1,5 +1,6 @@
 ﻿using App.DTOS;
 using App.Services.Interfaces;
+using Domain.FiltersDb;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,6 +76,20 @@ public class PersonController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _personService.DeleteAsync(id);
+
+        if (result == null)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] PersonFilterDb personFilter)
+    {
+        var result = await _personService.GetPagedAsync(personFilter);
 
         if (result == null)
         {
