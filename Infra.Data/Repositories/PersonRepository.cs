@@ -14,6 +14,7 @@ public class PersonRepository : IPersonRepository
     {
         _context = context;
     }
+    
     public async Task<Person> CreateAsync(Person person)
     {
         _context.Add(person);
@@ -61,14 +62,14 @@ public class PersonRepository : IPersonRepository
 
     public async Task<PagedBaseResponse<Person>> GetPagedAsync(PersonFilterDb filter)
     {
-        var people = await _context.People.ToListAsync();
+        var people = _context.People.AsQueryable();
 
-        if (string.IsNullOrEmpty(filter.Name) == false)
+        if (!string.IsNullOrEmpty(filter.Name))
         {
-            people = people.Where(x => x.Name.Contains(filter.Name)).ToList();
+            people = people.Where(x => x.Name.Contains(filter.Name));
         }
 
-        return await PagedBaseResponseHelper.GetResponseAsync<PagedBaseResponse<Person>, Person>(people.AsQueryable(), filter);
+        return await PagedBaseResponseHelper.GetResponseAsync<PagedBaseResponse<Person>, Person>(people, filter);
 
     }
 }
