@@ -13,13 +13,15 @@ namespace App.Services
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IProductRepository _productRepository;
         private readonly IPersonRepository _personRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PurchaseService(IPurchaseRepository purchaseRepository, IProductRepository productRepository, IPersonRepository personRepository, IMapper mapper)
+        public PurchaseService(IPurchaseRepository purchaseRepository, IProductRepository productRepository, IPersonRepository personRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _purchaseRepository = purchaseRepository;
             _productRepository = productRepository;
             _personRepository = personRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -33,20 +35,37 @@ namespace App.Services
             if (!validate.IsValid)
                 return ResultService.RequestError<PurchaseDTO>("Problemas de validação", validate);
 
-            var productId = await _productRepository.GetIdByCodErpAsync(dto.CodErp);
-            var personId = await _personRepository.GetIdByDocumentAsync(dto.Document);
+            try
+            {
+                await _unitOfWork.BeginTransaction();
 
-            if (productId == null || personId == null)
-                return ResultService.Fail<PurchaseDTO>("Produto não encontrado");
+                var productId = await _productRepository.GetIdByCodErpAsync(dto.CodErp);
+                if (productId == 0)
+                {
+                    var product = new Product(dto.ProductName, dto.CodErp, dto.Price ?? 0);
+                    await _productRepository.CreateAsync(product);
+                    productId = product.Id;
+                }
+                var personId = await _personRepository.GetIdByDocumentAsync(dto.Document);
 
-            var purchase = new Purchase(productId, personId);
+                if (productId == null || personId == null)
+                    return ResultService.Fail<PurchaseDTO>("Produto não encontrado");
 
-            var data = await _purchaseRepository.CreateAsync(purchase);
+                var purchase = new Purchase(productId, personId);
 
-            dto.Id = data.Id;
+                var data = await _purchaseRepository.CreateAsync(purchase);
 
-            return ResultService.Ok<PurchaseDTO>(dto);
-            
+                dto.Id = data.Id;
+
+                await _unitOfWork.Commit();
+                return ResultService.Ok<PurchaseDTO>(dto);
+            }
+            catch(Exception ex) 
+            {
+                await _unitOfWork.Rollback();
+                return ResultService.Fail<PurchaseDTO>(ex.Message);
+            }
+
         }
 
         public async Task<ResultService> DeleteAsync(int id)
